@@ -1,0 +1,17 @@
+{
+  "name": "nestmono",
+  "version": "1.0.0",
+  "description": "nestjs monorepo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd apps/client && npm run dev",
+    "server": "cd apps/server && npm run start:dev",
+    "start": "concurrently \"npm run client\" \"npm run server\" \" npx prisma studio\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
