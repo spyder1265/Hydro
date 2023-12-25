@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd apps/client && npm run dev",
     "server": "cd apps/server && npm run start:dev",
-    "start": "concurrently \"npm run client\" \"npm run server\" \" npx prisma studio\""
+    "start": "concurrently \"npm run client\" \"npm run server\" \" npx prisma studio\"",
+    "clientInstall": "cd apps/client && npm install",
+    "serverInstall": "cd apps/server && npm install",
+    "install": "concurrently \"npm run clientInstall\" \"npm run serverInstall\""
   },
   "author": "",
   "license": "ISC",
