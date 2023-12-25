@@ -18,7 +18,12 @@
 ## Installation
 
 ```bash
+# install both sever and client packages
 $ npm install
+
+# initialize prisma
+$ npx prisma init
+
 ```
 
 ## Running the app
