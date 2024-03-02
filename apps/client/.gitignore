@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# OS
+.DS_Store
+
 # production
 /build
 
