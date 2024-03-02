@@ -8,10 +8,11 @@ interface IPageProps {
 
 export const Page: React.FC<IPageProps> = ({ children }) => (
   <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.5 }}
+    //flade in from right to left
+    initial={{ opacity: 0, x: 100 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -100 }}
+    transition={{ duration: 0.3, ease: "easeInOut" }}
     className=''
   >
     {children}

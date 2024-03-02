@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { FaApple } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
-import { Button } from "flowbite-react";
+import Button from "../Button";
 
 interface ILogin {}
 
@@ -25,14 +25,15 @@ const Login: React.FC<ILogin> = ({}) => {
       const promise = new Promise<string>((resolve, reject) => {
         setTimeout(() => {
           axios
-            .post("http://localhost:3001/login", {
-              data: data,
+            .post("http://localhost:3001/auth/login", {
+              ...data,
             })
             .then((callback) => {
-              if (callback.status === 200 || callback.status === 201) {
+              if (callback.status === 200) {
+                localStorage.setItem("token", callback.data.access_token);
                 resolve("Login successful!");
                 setTimeout(() => {
-                  // router.push("/dashboard");
+                  router.push("/home");
                 }, 1000);
               }
               reject(new Error("Invalid credentials"));
@@ -55,7 +56,7 @@ const Login: React.FC<ILogin> = ({}) => {
   };
 
   return (
-    <div className='w-full text-neutral-200 p-4 h-auto'>
+    <div className='w-full text-neutral-200 flex flex-col p-4 h-auto'>
       <div className='text-3xl font-bold text-center'>Welcome Back</div>
       <div className='text-center'>Sign in to your account</div>
       <form className='w-full p-4' onSubmit={handleSubmit(submit)}>
@@ -123,20 +124,16 @@ const Login: React.FC<ILogin> = ({}) => {
 
         {/* Oauth buttons */}
         <div className='flex w-full flex-col gap-4  mt-2'>
-          <Button
-            color='dark'
-            disabled={isLoading}
-            className='inline-flex w-full p-1 items-center'
-          >
+          <Button disabled={isLoading} border='border' type={"button"}>
             <FaApple className='h-5 w-5' />
             <span className=' ml-2 text-sm font-medium text-white dark:text-gray-400'>
               Apple
             </span>
           </Button>
           <Button
-            color='dark'
             disabled={isLoading}
-            className='inline-flex w-full p-1 items-center'
+            type='button'
+            border='border'
             // onClick={() => handleLoginWith("google")}
           >
             <FcGoogle className='h-5 w-5' />
