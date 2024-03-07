@@ -21,6 +21,9 @@ const nextConfig = {
       {
         hostname: "source.unsplash.com",
       },
+      {
+        hostname: "picsum.photos",
+      },
     ],
   },
 };

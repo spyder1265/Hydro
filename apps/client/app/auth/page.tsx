@@ -1,16 +1,18 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useState } from "react";
-import Login from "../components/Form/Login";
+import { Suspense, useLayoutEffect, useState } from "react";
+import Login from "../../components/Form/Login";
 import { useRouter, useSearchParams } from "next/navigation";
 import { User } from "@prisma/client";
 import getCurrentUser from "../actions/GetCurrentUser";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { FaArrowRightToBracket, FaHouseLock } from "react-icons/fa6";
+import AuthUserByJWT from "../actions/AuthUser";
 
 type formType = "Login" | "Signup" | "Otp" | "forgotPassword" | "authenticated";
 
-export default function Auth() {
+function Auth() {
+  const [isAlive, setIsAlive] = useState(false);
   const [form, setForm] = useState<formType>("Login");
   const [isloading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User[]>([]);
@@ -44,14 +46,17 @@ export default function Auth() {
       token !== "null" &&
       token !== undefined
     ) {
-      getCurrentUser().then((user) => {
-        if (user && user?.id?.length > 0) {
-          setForm("authenticated");
-          setUser([user!]);
-          console.log(user);
-        } else {
+      AuthUserByJWT(token).then((user) => {
+        if (user && user.id.length > 0) {
+          getCurrentUser().then((user) => {
+            if (user && user?.id?.length > 0) {
+              setForm("authenticated");
+              setUser([user!]);
+            } else {
+            }
+            setIsLoading(false);
+          });
         }
-        setIsLoading(false);
       });
     } else {
       setForm("Login");
@@ -64,7 +69,7 @@ export default function Auth() {
   }, []);
 
   return (
-    <main className='flex h-screen w-full flex-col items-center'>
+    <main className='flex h-screen gradient-bg w-full flex-col items-center'>
       <div className='flex h-full w-full flex-col md:flex-row items-center justify-center'>
         <div className='h-auto flex w-4/5 glass items-center shadow-xl rounded-xl shadow-white  md:h-full md:flex md:basis-1/3 md:shadow-none '>
           {form === "Login" && !isloading ? (
@@ -113,5 +118,13 @@ export default function Auth() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Auth />
+    </Suspense>
   );
 }

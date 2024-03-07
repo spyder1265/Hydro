@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import getCurrentUser from "../actions/GetCurrentUser";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import AuthUserByJWT from "../actions/AuthUser";
 
 interface Ipage {}
 
@@ -15,7 +16,7 @@ const page: React.FC<Ipage> = ({}) => {
   useLayoutEffect(() => {
     setIsLoading(true);
     getCurrentUser().then((user) => {
-      if (user && user.id.length > 0) {
+      if (user && user?.id?.length > 0) {
         setUser([user!]);
         setIsLoading(false);
       } else {
@@ -23,6 +24,31 @@ const page: React.FC<Ipage> = ({}) => {
       }
     });
   }, []);
+
+  useLayoutEffect(() => {
+    const token = localStorage.getItem("token");
+    if (
+      token &&
+      token !== "undefined" &&
+      token !== "null" &&
+      token !== undefined
+    ) {
+      AuthUserByJWT(token).then((user) => {
+        if (user && user.id.length > 0) {
+          getCurrentUser().then((user) => {
+            if (user && user?.id?.length > 0) {
+              setUser([user!]);
+              setIsLoading(false);
+            } else {
+              router.push("/auth");
+            }
+          });
+        }
+      });
+    } else {
+      router.push("/auth");
+    }
+  });
 
   if (isloading) {
     return <div>Loading...</div>;
