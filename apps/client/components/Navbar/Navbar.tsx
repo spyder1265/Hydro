@@ -10,26 +10,25 @@ import {
   PhoneIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import SearchBar from "./Search";
 import ThemeSelector from "./ThemeSelector";
 
 const products = [
   {
     name: "Reviews",
     description: "Check out the rewiews of most of our customers",
-    href: "/reviews",
+    href: "#reviews",
     icon: UserGroupIcon,
   },
   {
     name: "Contact us",
     description: "Get in touch with us",
-    href: "/contact",
+    href: "#contact",
     icon: PhoneIcon,
   },
   {
     name: "Admin",
     description: "Login as admin to add new vehicles",
-    href: "/admin",
+    href: "#admin",
     icon: UserIcon,
   },
 ];
@@ -66,7 +65,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
       }`}
     >
       <nav
-        className='mx-auto flex w-7xl  items-center justify-between p-3 lg:px-8'
+        className='mx-auto flex w-7xl items-center justify-between p-3 py-5 md:px-8'
         aria-label='Global'
       >
         <div className='flex lg:hidden'>
@@ -82,16 +81,18 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
             />
           </button>
         </div>
-        <div className='lg:hidden ml-5 pl-2 h-full my-auto flex flex-1 justify-center'>
-          <SearchBar onSearch={handleSearch} />
-        </div>
-        <div className='flex items-center h-6 md:h-10 lg:flex-1'>
+
+        <div className='flex items-center place-self-center h-6 md:h-10 lg:flex-1'>
           <a
             href='/'
-            className='bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-2xl'
+            className='bg-gradient-to-br from-neutral-600 to-slate-500 dark:from-slate-300 dark:to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl'
           >
             Hydro
           </a>
+        </div>
+
+        <div className='lg:hidden ml-5 pl-2 h-full my-auto justify-center'>
+          <ThemeSelector />
         </div>
 
         <Popover.Group className='hidden lg:flex lg:gap-x-12'>
@@ -162,7 +163,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           </Popover>
 
           <a
-            href='/about'
+            href='#about'
             className={`text-sm font-semibold leading-6 dark:text-neutral-200 ${
               location === "/about" ? "underline" : "hover:opacity-75"
             } dark:hover:text-neutral-50 `}
@@ -170,7 +171,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
             About Us
           </a>
           <a
-            href='/repairs'
+            href='#pricing'
             className={`text-sm font-semibold leading-6 dark:text-neutral-200 ${
               location === "/repairs" ? "underline" : "hover:opacity-75"
             } dark:hover:text-neutral-50 `}
@@ -193,12 +194,12 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
         <Dialog.Panel className='fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-neutral-900/10'>
           <div className='flex items-center  justify-between'>
             <div className='-m-1.5 p-1.5'>
-              <span className='sr-only'>Jaqis Carport</span>
-              <img
-                className='h-8 scale-150 rotate-12s w-auto'
-                src='/img/logoblack.png'
-                alt=''
-              />
+              <a
+                href='/'
+                className='bg-gradient-to-br from-neutral-600 to-slate-500 dark:from-slate-300 dark:to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl'
+              >
+                Hydro
+              </a>
             </div>
 
             <button
@@ -268,17 +269,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                   )}
                 </Disclosure>
                 <a
-                  href='/vehicles'
-                  className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
-                    location === "/vehicles" || location?.includes("/vehicles")
-                      ? "bg-neutral-100 text-neutral-800"
-                      : " text-neutral-200 hover:bg-neutral-50 hover:text-neutral-800"
-                  } `}
-                >
-                  Vehicles
-                </a>
-                <a
-                  href='about'
+                  href='#about'
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
                     location === "/about"
                       ? "bg-neutral-100 text-neutral-800"
@@ -288,14 +279,14 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                   About Us
                 </a>
                 <a
-                  href='repairs'
+                  href='#pricing'
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
                     location === "/repairs"
                       ? "bg-neutral-100 text-neutral-800"
                       : " text-neutral-200 hover:bg-neutral-50 hover:text-neutral-800"
                   }`}
                 >
-                  Repairs
+                  Pricing
                 </a>
               </div>
             </div>

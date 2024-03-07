@@ -29,13 +29,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const toggleTheme = (newTheme: Theme) => {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    console.log(newTheme);
+    if (newTheme === "system") {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.classList.add("dark");
+        document.getElementsByTagName("body").item(0)!.style.backgroundColor =
+          "#171717";
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.getElementsByTagName("body").item(0)!.style.backgroundColor =
+          "#ffffff";
+      }
+    } else if (newTheme === "light") {
+      document.documentElement.classList.remove("dark");
+      document.getElementsByTagName("body").item(0)!.style.backgroundColor =
+        "#ffffff";
+    } else {
+      document.documentElement.classList.add("dark");
+      document.getElementsByTagName("body").item(0)!.style.backgroundColor =
+        "#171717";
+    }
   };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
-      setTheme(savedTheme as Theme);
+      toggleTheme(savedTheme as Theme);
     }
   }, []);
 

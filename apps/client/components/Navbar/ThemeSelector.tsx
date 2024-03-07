@@ -16,25 +16,8 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
   const handleTheme = (theme: Theme) => {
     toggleTheme(theme);
     setTheme(theme);
-    if (theme === "system") {
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("dark");
-        document.getElementsByTagName("body").item(0)!.style.backgroundColor =
-          "#000";
-      } else {
-        document.documentElement.classList.remove("dark");
-        document.getElementsByTagName("body").item(0)!.style.backgroundColor =
-          "#ffffff";
-      }
-    } else if (theme === "light") {
-      document.documentElement.classList.remove("dark");
-      document.getElementsByTagName("body").item(0)!.style.backgroundColor =
-        "#ffffff";
-    } else {
-      document.documentElement.classList.add("dark");
-      document.getElementsByTagName("body").item(0)!.style.backgroundColor =
-        "#000";
-    }
+
+    setIsOpen(false);
   };
 
   const onClose = () => {
@@ -60,7 +43,11 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
 
   useLayoutEffect(() => {
     const theme = localStorage.getItem("theme");
-    if (theme) handleTheme(theme as Theme);
+    if (theme) {
+      handleTheme(theme as Theme);
+    } else {
+      handleTheme(contextTheme);
+    }
   }, [theme]);
 
   const themeOptions = [
@@ -69,7 +56,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
       icon: <FaSun className='dark:text-white text-black hover:opacity-75 ' />,
       className:
         "w-6 h-6 bg-gradient-to-br from-slate-300 to-slate-500 dark:from-slate-500 dark:to-slate-300 bg-clip-text",
-      active: false,
+      active: contextTheme === "light" ? true : false,
     },
 
     {
@@ -77,7 +64,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
       icon: <FaMoon className='dark:text-white text-black hover:opacity-75 ' />,
       className:
         "w-6 h-6 bg-gradient-to-br from-slate-300 to-slate-500 dark:from-slate-500 dark:to-slate-300 bg-clip-text",
-      active: false,
+      active: contextTheme === "dark" ? true : false,
     },
     {
       title: "system",
@@ -86,7 +73,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
       ),
       className:
         "w-6 h-6 bg-gradient-to-br from-slate-300 to-slate-500 dark:from-slate-500 dark:to-slate-300 bg-clip-text ",
-      active: true,
+      active: contextTheme === "system" ? true : false,
     },
   ];
 
