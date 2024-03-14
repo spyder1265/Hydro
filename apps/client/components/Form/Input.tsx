@@ -53,7 +53,7 @@ const Input: React.FC<InputProps> = ({
           p-3
           font-light 
           border-2
-          rounded-lg
+          rounded-xl
           outline-none
           transition
           disabled:opacity-70

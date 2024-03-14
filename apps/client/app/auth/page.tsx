@@ -8,11 +8,16 @@ import getCurrentUser from "../actions/GetCurrentUser";
 import Button from "../../components/Button";
 import { FaArrowRightToBracket, FaHouseLock } from "react-icons/fa6";
 import AuthUserByJWT from "../actions/AuthUser";
+import HasAuth from "@/components/Form/HasAuth";
+import { useTheme } from "../contexts/ThemeContext";
+import { ArrowLeftIcon, HomeIcon } from "@heroicons/react/24/outline";
+import ThemeSelector from "@/components/Navbar/ThemeSelector";
+import { FormNav } from "@/components/Navbar/Navbar";
 
 type formType = "Login" | "Signup" | "Otp" | "forgotPassword" | "authenticated";
 
 function Auth() {
-  const [isAlive, setIsAlive] = useState(false);
+  const { theme } = useTheme();
   const [form, setForm] = useState<formType>("Login");
   const [isloading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User[]>([]);
@@ -30,11 +35,6 @@ function Auth() {
       case "forgotPassword":
         return "forgotPassword";
     }
-  };
-
-  const Logout = () => {
-    localStorage.removeItem("token");
-    setForm("Login");
   };
 
   useLayoutEffect(() => {
@@ -60,7 +60,9 @@ function Auth() {
       });
     } else {
       setForm("Login");
-      setIsLoading(false);
+      if (theme) {
+        setIsLoading(false);
+      }
     }
 
     if (searchParams.get("form")) {
@@ -68,57 +70,42 @@ function Auth() {
     }
   }, []);
 
-  return (
-    <main className='flex h-screen gradient-bg w-full flex-col items-center'>
-      <div className='flex h-full w-full flex-col md:flex-row items-center justify-center'>
-        <div className='h-auto flex w-4/5 glass items-center shadow-xl rounded-xl shadow-white  md:h-full md:flex md:basis-1/3 md:shadow-none '>
-          {form === "Login" && !isloading ? (
-            <Login />
-          ) : form === "authenticated" && !isloading ? (
-            <div className='flex flex-col w-full items-center justify-center'>
-              <h1 className='text-3xl font-bold'>
-                Hello{" "}
-                <span className='font-thin animate-pulse'>{user[0]?.name}</span>
-              </h1>
-              <div className='flex items-center gap-7 mt-11 justify-between'>
-                <Button
-                  onClick={() => Logout()}
-                  type='button'
-                  className='text-white gap-2'
-                >
-                  <FaArrowRightToBracket className='rotate-180 text-red-500' />
-                  <span>Logout</span>
-                </Button>
+  const goBack = () => {
+    router.back();
+  };
 
-                <Button
-                  onClick={() => {
-                    router.push("/home");
-                  }}
-                  type='button'
-                  className='text-white underline underline-offset-1 gap-2'
-                >
-                  <span>Home</span>
-                  <FaHouseLock className='text-blue-500' />
-                </Button>
-              </div>
+  if (!isloading)
+    return (
+      <main className='flex h-screen gradient-bg w-full flex-col items-center text-neutral-900 dark:text-neutral-100'>
+        <div className='w-full flex md:hidden py-8'>
+          <FormNav />
+        </div>
+        <div className='flex h-full w-full flex-col md:flex-row items-center justify-center'>
+          <div className='h-auto dark:bg-neutral-900 flex flex-col w-4/5 glass items-center justify-around md:h-full md:flex md:basis-1/3 md:shadow-none '>
+            <div className='w-full hidden md:flex'>
+              <FormNav />
             </div>
-          ) : (
-            <></>
-          )}
+            {form === "Login" && !isloading ? (
+              <Login />
+            ) : form === "authenticated" && !isloading ? (
+              <HasAuth user={user[0]} />
+            ) : (
+              <></>
+            )}
+          </div>
+          <div className='h-full hidden md:flex basis-2/3'>
+            <Image
+              src='/bg.jpeg'
+              alt='hero'
+              width={500}
+              height={500}
+              className='object-cover w-full h-full'
+              priority
+            />
+          </div>
         </div>
-        <div className='h-full hidden md:flex basis-2/3'>
-          <Image
-            src='/bg.jpeg'
-            alt='hero'
-            width={500}
-            height={500}
-            className='object-cover w-full h-full'
-            priority
-          />
-        </div>
-      </div>
-    </main>
-  );
+      </main>
+    );
 }
 
 export default function Page() {

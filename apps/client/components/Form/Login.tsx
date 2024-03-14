@@ -56,7 +56,7 @@ const Login: React.FC<ILogin> = ({}) => {
   };
 
   return (
-    <div className='w-full text-neutral-200 flex flex-col p-4 h-auto'>
+    <div className='w-full dark:text-neutral-200 flex flex-col p-4 h-auto'>
       <div className='text-3xl font-bold text-center'>Welcome Back</div>
       <div className='text-center'>Sign in to your account</div>
       <form className='w-full p-4' onSubmit={handleSubmit(submit)}>
@@ -68,7 +68,7 @@ const Login: React.FC<ILogin> = ({}) => {
             label='Email'
             type='email'
             primativeProps={{
-              placeholder: "Email",
+              placeholder: "user@example.com",
               autoComplete: "email",
             }}
           />
@@ -81,7 +81,7 @@ const Login: React.FC<ILogin> = ({}) => {
             label='Password'
             type='password'
             primativeProps={{
-              placeholder: "Password",
+              placeholder: "*********",
               autoComplete: "current-password",
             }}
           />
@@ -107,7 +107,7 @@ const Login: React.FC<ILogin> = ({}) => {
           <button
             type='submit'
             disabled={isLoading}
-            className='inline-flex w-full items-center justify-center rounded-lg bg-blue-500 hover:bg-blue-700 px-5 py-3 text-center text-base font-medium text-white focus:ring-4 focus:ring-primary-300 disabled:bg-primary-700 disabled:opacity-60 '
+            className='inline-flex w-full rounded-xl items-center justify-center bg-blue-500 hover:bg-blue-700 px-5 py-3 text-center text-base font-medium text-white focus:ring-4 focus:ring-primary-300 disabled:bg-primary-700 disabled:opacity-60 '
           >
             Login
           </button>
@@ -126,18 +126,13 @@ const Login: React.FC<ILogin> = ({}) => {
         <div className='flex w-full flex-col gap-4  mt-2'>
           <Button disabled={isLoading} border='border' type={"button"}>
             <FaApple className='h-5 w-5' />
-            <span className=' ml-2 text-sm font-medium text-white dark:text-gray-400'>
+            <span className=' ml-2 text-sm font-medium text-neutral-900 dark:text-neutral-400'>
               Apple
             </span>
           </Button>
-          <Button
-            disabled={isLoading}
-            type='button'
-            border='border'
-            // onClick={() => handleLoginWith("google")}
-          >
+          <Button disabled={isLoading} type='button' border='border'>
             <FcGoogle className='h-5 w-5' />
-            <span className=' ml-2 text-sm font-medium text-white dark:text-gray-400'>
+            <span className=' ml-2 text-sm font-medium text-neutral-900 dark:text-neutral-400'>
               Google
             </span>
           </Button>

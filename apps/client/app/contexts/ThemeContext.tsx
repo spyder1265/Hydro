@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
   ReactNode,
-  useEffect,
+  useLayoutEffect,
 } from "react";
 
 // Define the theme types
@@ -25,6 +25,7 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("system");
+  const [hasMounted, setHasMounted] = useState<boolean>();
 
   const toggleTheme = (newTheme: Theme) => {
     setTheme(newTheme);
@@ -50,11 +51,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setHasMounted(false);
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       toggleTheme(savedTheme as Theme);
     }
+    setHasMounted(true);
   }, []);
 
   const contextValue: ThemeContextProps = {
@@ -62,11 +65,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     toggleTheme,
   };
 
-  return (
-    <ThemeContext.Provider value={contextValue}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  if (hasMounted)
+    return (
+      <ThemeContext.Provider value={contextValue}>
+        {children}
+      </ThemeContext.Provider>
+    );
 };
 
 // Create a custom hook for using the theme context

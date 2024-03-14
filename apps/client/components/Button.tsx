@@ -53,7 +53,7 @@ const Button: React.FC<IButton> = ({
     <button
       type={type}
       disabled={isLoading || disabled}
-      className={` ${className} w-full py-3 px-4 inline-flex justify-center items-center ${border} hover:opacity-80 text-white rounded-md`}
+      className={` ${className} w-full py-3 px-4 inline-flex justify-center items-center ${border} hover:bg-neutral-200 hover:dark:bg-transparent  hover:dark:opacity-75 text-neutral-900 dark:text-white rounded-xl`}
       onClick={onClick}
     >
       {children}

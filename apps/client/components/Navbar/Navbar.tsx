@@ -8,6 +8,7 @@ import {
   XMarkIcon,
   UserIcon,
   PhoneIcon,
+  HomeIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import ThemeSelector from "./ThemeSelector";
@@ -71,7 +72,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
         <div className='flex lg:hidden'>
           <button
             type='button'
-            className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 hover:bg-neutral-500 text-white hover:text-neutral-200'
+            className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 hover:opacity-75 dark:text-neutral-300 dark:hover:text-neutral-200'
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className='sr-only'>Open main menu</span>
@@ -139,19 +140,19 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                     >
                       <div className='flex h-11 w-11 flex-none items-center justify-center rounded-lg '>
                         <item.icon
-                          className='h-6 w-6 dark:text-neutral-100 text-neutral-900 group-hover:text-white dark:group-hover:text-black'
+                          className='h-6 w-6 dark:text-neutral-100 text-neutral-900 group-hover:text-neutral-300 dark:group-hover:text-black'
                           aria-hidden='true'
                         />
                       </div>
                       <div className='flex-auto'>
                         <a
                           href={item.href}
-                          className='block font-semibold dark:text-neutral-100 text-neutral-900 group-hover:text-white dark:group-hover:text-black'
+                          className='block font-semibold dark:text-neutral-100 text-neutral-900 group-hover:text-neutral-300 dark:group-hover:text-black'
                         >
                           {item.name}
                           <span className='absolute inset-0' />
                         </a>
-                        <p className='mt-1 dark:text-neutral-100 text-neutral-900 group-hover:text-white dark:group-hover:text-black'>
+                        <p className='mt-1 dark:text-neutral-100 text-neutral-900 group-hover:text-neutral-300 dark:group-hover:text-black'>
                           {item.description}
                         </p>
                       </div>
@@ -191,7 +192,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
         onClose={setMobileMenuOpen}
       >
         <div className='fixed inset-0 z-10' />
-        <Dialog.Panel className='fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-neutral-900/10'>
+        <Dialog.Panel className='fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-neutral-100 dark:bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-neutral-900/10'>
           <div className='flex items-center  justify-between'>
             <div className='-m-1.5 p-1.5'>
               <a
@@ -204,12 +205,12 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
 
             <button
               type='button'
-              className='-m-2.5 rounded-md p-2.5 text-neutral-700'
+              className='-m-2.5 rounded-md p-2.5 text-neutral-700 dark:text-neutral-300'
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className='sr-only'>Close menu</span>
               <XMarkIcon
-                className='h-6 w-6 hover:text-white'
+                className='h-6 w-6 hover:text-neutral-500 '
                 aria-hidden='true'
               />
             </button>
@@ -223,7 +224,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                   className={`-mx-3 block rounded-lg ${
                     location === "/"
                       ? "bg-neutral-100 text-black"
-                      : "hover:bg-neutral-50 hover:text-neutral-800 text-neutral-200"
+                      : "dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
                   } px-3 py-2 text-base font-semibold leading-7 hover:text-underline`}
                 >
                   Home
@@ -237,7 +238,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                           location === "/contact" ||
                           location === "/admin"
                             ? "bg-neutral-100 text-neutral-800"
-                            : " text-neutral-200 hover:bg-neutral-50 hover:text-neutral-800"
+                            : " dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
                         }`}
                       >
                         Product
@@ -258,7 +259,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                             className={`block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 ${
                               location === item.href
                                 ? "bg-neutral-300 text-neutral-600"
-                                : "text-neutral-200 hover:bg-neutral-300 hover:text-neutral-600"
+                                : "dark:text-neutral-200 text-neutral-500 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
                             } `}
                           >
                             {item.name}
@@ -273,7 +274,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
                     location === "/about"
                       ? "bg-neutral-100 text-neutral-800"
-                      : " text-neutral-200 hover:bg-neutral-50 hover:text-neutral-800"
+                      : " dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
                   }`}
                 >
                   About Us
@@ -283,7 +284,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
                     location === "/repairs"
                       ? "bg-neutral-100 text-neutral-800"
-                      : " text-neutral-200 hover:bg-neutral-50 hover:text-neutral-800"
+                      : " dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
                   }`}
                 >
                   Pricing
@@ -298,3 +299,23 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
 };
 
 export default Navbar;
+
+export const FormNav = () => {
+  return (
+    <div className='w-full px-9 flex justify-between'>
+      <a
+        href='/'
+        className='hover:dark:text-neutral-300 hover:text-neutral-600'
+      >
+        <HomeIcon className='h-7 ' />
+      </a>
+      <div className='flex gap-2'>
+        <ThemeSelector />
+
+        <button className='px-4 py-1 rounded-lg border dark:hover:border-neutral-300 dark:hover:text-neutral-300'>
+          Signup
+        </button>
+      </div>
+    </div>
+  );
+};
