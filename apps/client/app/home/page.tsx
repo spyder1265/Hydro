@@ -1,60 +1,60 @@
-"use client";
+'use client'
 
-import { useLayoutEffect, useState } from "react";
-import getCurrentUser from "../actions/GetCurrentUser";
-import { User } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import AuthUserByJWT from "../actions/AuthUser";
+import { useLayoutEffect, useState } from 'react'
+import getCurrentUser from '../actions/GetCurrentUser'
+import { User } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import AuthUserByJWT from '../actions/AuthUser'
 
 interface Ipage {}
 
 const page: React.FC<Ipage> = ({}) => {
-  const [user, setUser] = useState<User[]>([]);
-  const [isloading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const [user, setUser] = useState<User[]>([])
+  const [isloading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   useLayoutEffect(() => {
-    setIsLoading(true);
-    getCurrentUser().then((user) => {
+    setIsLoading(true)
+    getCurrentUser().then(user => {
       if (user && user?.id?.length > 0) {
-        setUser([user!]);
-        setIsLoading(false);
+        setUser([user!])
+        setIsLoading(false)
       } else {
-        router.push("/auth");
+        router.push('/auth')
       }
-    });
-  }, []);
+    })
+  }, [])
 
   useLayoutEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token')
     if (
       token &&
-      token !== "undefined" &&
-      token !== "null" &&
+      token !== 'undefined' &&
+      token !== 'null' &&
       token !== undefined
     ) {
-      AuthUserByJWT(token).then((user) => {
+      AuthUserByJWT(token).then(user => {
         if (user && user.id.length > 0) {
-          getCurrentUser().then((user) => {
+          getCurrentUser().then(user => {
             if (user && user?.id?.length > 0) {
-              setUser([user!]);
-              setIsLoading(false);
+              setUser([user!])
+              setIsLoading(false)
             } else {
-              router.push("/auth");
+              router.push('/auth')
             }
-          });
+          })
         }
-      });
+      })
     } else {
-      router.push("/auth");
+      router.push('/auth')
     }
-  });
+  })
 
   if (isloading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   } else
     return (
-      <div className='flex flex-col min-h-screen w-full items-center  p-24'>
+      <div className='flex min-h-screen w-full flex-col items-center  p-24'>
         <h1 className='text-2xl font-bold capitalize'>home</h1>
         <div className='flex flex-col items-center'>
           <h1 className='text-2xl font-bold capitalize'>
@@ -65,6 +65,6 @@ const page: React.FC<Ipage> = ({}) => {
           </h1>
         </div>
       </div>
-    );
-};
-export default page;
+    )
+}
+export default page

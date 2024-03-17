@@ -1,72 +1,72 @@
-"use client";
-import { Fragment, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+'use client'
+import { Fragment, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   Bars3BottomLeftIcon,
   UserGroupIcon,
   XMarkIcon,
   UserIcon,
   PhoneIcon,
-  HomeIcon,
-} from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import ThemeSelector from "./ThemeSelector";
+  HomeIcon
+} from '@heroicons/react/24/outline'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import ThemeSelector from './ThemeSelector'
 
 const products = [
   {
-    name: "Reviews",
-    description: "Check out the rewiews of most of our customers",
-    href: "#reviews",
-    icon: UserGroupIcon,
+    name: 'Reviews',
+    description: 'Check out the rewiews of most of our customers',
+    href: '#reviews',
+    icon: UserGroupIcon
   },
   {
-    name: "Contact us",
-    description: "Get in touch with us",
-    href: "#contact",
-    icon: PhoneIcon,
+    name: 'Contact us',
+    description: 'Get in touch with us',
+    href: '#contact',
+    icon: PhoneIcon
   },
   {
-    name: "Admin",
-    description: "Login as admin to add new vehicles",
-    href: "#admin",
-    icon: UserIcon,
-  },
-];
+    name: 'Admin',
+    description: 'Login as admin to add new vehicles',
+    href: '#admin',
+    icon: UserIcon
+  }
+]
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
 interface Props {
-  contact?: boolean;
-  onSearch?: (search: string) => void;
+  contact?: boolean
+  onSearch?: (search: string) => void
 }
 
 const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = usePathname();
-  const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const location = usePathname()
+  const router = useRouter()
 
   const handleSearch = (value: string) => {
-    if (location !== "/vehicles") {
-      router.push(`/vehicles?query=${encodeURIComponent(value)}`);
+    if (location !== '/vehicles') {
+      router.push(`/vehicles?query=${encodeURIComponent(value)}`)
     }
 
-    onSearch?.(value);
+    onSearch?.(value)
     if (mobileMenuOpen) {
-      setMobileMenuOpen(false);
+      setMobileMenuOpen(false)
     }
-  };
+  }
 
   return (
     <header
-      className={` z-50 dark:bg-slate-950 w-full ${
-        contact && "absolute  w-full top-0 left-0 right-0"
+      className={` z-50 w-full dark:bg-slate-950 ${
+        contact && 'absolute  left-0 right-0 top-0 w-full'
       }`}
     >
       <nav
-        className='mx-auto flex w-7xl items-center justify-between p-3 py-5 md:px-8'
+        className='w-7xl mx-auto flex items-center justify-between p-3 py-5 md:px-8'
         aria-label='Global'
       >
         <div className='flex lg:hidden'>
@@ -77,22 +77,22 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           >
             <span className='sr-only'>Open main menu</span>
             <Bars3BottomLeftIcon
-              className='h-6 hover: w-6'
+              className='hover: h-6 w-6'
               aria-hidden='true'
             />
           </button>
         </div>
 
-        <div className='flex items-center place-self-center h-6 md:h-10 lg:flex-1'>
+        <div className='flex h-6 items-center place-self-center md:h-10 lg:flex-1'>
           <a
             href='/'
-            className='bg-gradient-to-br from-neutral-600 to-slate-500 dark:from-slate-300 dark:to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl'
+            className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl dark:from-slate-300 dark:to-slate-500'
           >
             Hydro
           </a>
         </div>
 
-        <div className='lg:hidden ml-5 pl-2 h-full my-auto justify-center'>
+        <div className='my-auto ml-5 h-full justify-center pl-2 lg:hidden'>
           <ThemeSelector />
         </div>
 
@@ -100,7 +100,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           <a
             href='/'
             className={`text-sm font-semibold leading-6 dark:text-neutral-200 ${
-              location === "/" ? "underline" : "hover:opacity-75"
+              location === '/' ? 'underline' : 'hover:opacity-75'
             } dark:hover:text-neutral-50`}
           >
             Home
@@ -108,11 +108,11 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           <Popover className='relative'>
             <Popover.Button
               className={`flex items-center gap-x-1 text-sm font-semibold leading-6 outline-none dark:text-neutral-200 ${
-                location === "/reviews" ||
-                location === "/contact" ||
-                location === "/admin"
-                  ? "underline"
-                  : "hover:opacity-75"
+                location === '/reviews' ||
+                location === '/contact' ||
+                location === '/admin'
+                  ? 'underline'
+                  : 'hover:opacity-75'
               } dark:hover:text-neutral-50`}
             >
               Product
@@ -131,28 +131,28 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
               leaveFrom='opacity-100 translate-y-0'
               leaveTo='opacity-0 translate-y-1'
             >
-              <Popover.Panel className='absolute -left-8 z-[100] top-full mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white dark:bg-black shadow-lg ring-1 ring-neutral-900/5'>
+              <Popover.Panel className='absolute -left-8 top-full z-[100] mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-neutral-900/5 dark:bg-black'>
                 <div className='p-4'>
-                  {products.map((item) => (
+                  {products.map(item => (
                     <div
                       key={item.name}
-                      className='group relative flex items-center gap-x-6 rounded-xl overflow-hidden p-4 text-sm leading-6 hover:bg-neutral-900 dark:hover:bg-neutral-100 '
+                      className='group relative flex items-center gap-x-6 overflow-hidden rounded-xl p-4 text-sm leading-6 hover:bg-neutral-900 dark:hover:bg-neutral-100 '
                     >
                       <div className='flex h-11 w-11 flex-none items-center justify-center rounded-lg '>
                         <item.icon
-                          className='h-6 w-6 dark:text-neutral-100 text-neutral-900 group-hover:text-neutral-300 dark:group-hover:text-black'
+                          className='h-6 w-6 text-neutral-900 group-hover:text-neutral-300 dark:text-neutral-100 dark:group-hover:text-black'
                           aria-hidden='true'
                         />
                       </div>
                       <div className='flex-auto'>
                         <a
                           href={item.href}
-                          className='block font-semibold dark:text-neutral-100 text-neutral-900 group-hover:text-neutral-300 dark:group-hover:text-black'
+                          className='block font-semibold text-neutral-900 group-hover:text-neutral-300 dark:text-neutral-100 dark:group-hover:text-black'
                         >
                           {item.name}
                           <span className='absolute inset-0' />
                         </a>
-                        <p className='mt-1 dark:text-neutral-100 text-neutral-900 group-hover:text-neutral-300 dark:group-hover:text-black'>
+                        <p className='mt-1 text-neutral-900 group-hover:text-neutral-300 dark:text-neutral-100 dark:group-hover:text-black'>
                           {item.description}
                         </p>
                       </div>
@@ -166,7 +166,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           <a
             href='#about'
             className={`text-sm font-semibold leading-6 dark:text-neutral-200 ${
-              location === "/about" ? "underline" : "hover:opacity-75"
+              location === '/about' ? 'underline' : 'hover:opacity-75'
             } dark:hover:text-neutral-50 `}
           >
             About Us
@@ -174,7 +174,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           <a
             href='#pricing'
             className={`text-sm font-semibold leading-6 dark:text-neutral-200 ${
-              location === "/repairs" ? "underline" : "hover:opacity-75"
+              location === '/repairs' ? 'underline' : 'hover:opacity-75'
             } dark:hover:text-neutral-50 `}
           >
             Pricing
@@ -192,12 +192,12 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
         onClose={setMobileMenuOpen}
       >
         <div className='fixed inset-0 z-10' />
-        <Dialog.Panel className='fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-neutral-100 dark:bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-neutral-900/10'>
+        <Dialog.Panel className='fixed inset-y-0 left-0 z-50 w-full overflow-y-auto bg-neutral-100 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-neutral-900/10 dark:bg-black'>
           <div className='flex items-center  justify-between'>
             <div className='-m-1.5 p-1.5'>
               <a
                 href='/'
-                className='bg-gradient-to-br from-neutral-600 to-slate-500 dark:from-slate-300 dark:to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl'
+                className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl dark:from-slate-300 dark:to-slate-500'
               >
                 Hydro
               </a>
@@ -220,12 +220,12 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
               <div className='space-y-2 py-6'>
                 <a
                   href='/'
-                  aria-disabled={location === "/"}
+                  aria-disabled={location === '/'}
                   className={`-mx-3 block rounded-lg ${
-                    location === "/"
-                      ? "bg-neutral-100 text-black"
-                      : "dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
-                  } px-3 py-2 text-base font-semibold leading-7 hover:text-underline`}
+                    location === '/'
+                      ? 'bg-neutral-100 text-black'
+                      : 'text-neutral-600 hover:bg-neutral-900 hover:text-neutral-300 dark:text-neutral-200 dark:hover:bg-neutral-50 dark:hover:text-neutral-800'
+                  } hover:text-underline px-3 py-2 text-base font-semibold leading-7`}
                 >
                   Home
                 </a>
@@ -234,32 +234,32 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                     <>
                       <Disclosure.Button
                         className={`flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 ${
-                          location === "/reviews" ||
-                          location === "/contact" ||
-                          location === "/admin"
-                            ? "bg-neutral-100 text-neutral-800"
-                            : " dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
+                          location === '/reviews' ||
+                          location === '/contact' ||
+                          location === '/admin'
+                            ? 'bg-neutral-100 text-neutral-800'
+                            : ' text-neutral-600 hover:bg-neutral-900 hover:text-neutral-300 dark:text-neutral-200 dark:hover:bg-neutral-50 dark:hover:text-neutral-800'
                         }`}
                       >
                         Product
                         <ChevronDownIcon
                           className={classNames(
-                            open ? "rotate-180" : "",
-                            "h-5 w-5 flex-none"
+                            open ? 'rotate-180' : '',
+                            'h-5 w-5 flex-none'
                           )}
                           aria-hidden='true'
                         />
                       </Disclosure.Button>
                       <Disclosure.Panel className='mt-2 space-y-2'>
-                        {[...products].map((item) => (
+                        {[...products].map(item => (
                           <Disclosure.Button
                             key={item.name}
                             as='a'
                             href={item.href}
                             className={`block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 ${
                               location === item.href
-                                ? "bg-neutral-300 text-neutral-600"
-                                : "dark:text-neutral-200 text-neutral-500 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
+                                ? 'bg-neutral-300 text-neutral-600'
+                                : 'text-neutral-500 hover:bg-neutral-900 hover:text-neutral-300 dark:text-neutral-200 dark:hover:bg-neutral-50 dark:hover:text-neutral-800'
                             } `}
                           >
                             {item.name}
@@ -272,9 +272,9 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                 <a
                   href='#about'
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
-                    location === "/about"
-                      ? "bg-neutral-100 text-neutral-800"
-                      : " dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
+                    location === '/about'
+                      ? 'bg-neutral-100 text-neutral-800'
+                      : ' text-neutral-600 hover:bg-neutral-900 hover:text-neutral-300 dark:text-neutral-200 dark:hover:bg-neutral-50 dark:hover:text-neutral-800'
                   }`}
                 >
                   About Us
@@ -282,9 +282,9 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
                 <a
                   href='#pricing'
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  ${
-                    location === "/repairs"
-                      ? "bg-neutral-100 text-neutral-800"
-                      : " dark:text-neutral-200 text-neutral-600 hover:bg-neutral-900 dark:hover:bg-neutral-50 hover:text-neutral-300 dark:hover:text-neutral-800"
+                    location === '/repairs'
+                      ? 'bg-neutral-100 text-neutral-800'
+                      : ' text-neutral-600 hover:bg-neutral-900 hover:text-neutral-300 dark:text-neutral-200 dark:hover:bg-neutral-50 dark:hover:text-neutral-800'
                   }`}
                 >
                   Pricing
@@ -295,27 +295,40 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
         </Dialog.Panel>
       </Dialog>
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
 
 export const FormNav = () => {
+  const searchparams = useSearchParams()
   return (
-    <div className='w-full px-9 flex justify-between'>
+    <div className='flex w-full justify-between px-9'>
       <a
         href='/'
-        className='hover:dark:text-neutral-300 hover:text-neutral-600'
+        className='hover:text-neutral-600 hover:dark:text-neutral-300'
       >
         <HomeIcon className='h-7 ' />
       </a>
       <div className='flex gap-2'>
         <ThemeSelector />
 
-        <button className='px-4 py-1 rounded-lg border dark:hover:border-neutral-300 dark:hover:text-neutral-300'>
-          Signup
-        </button>
+        {searchparams.get('form') === 'signup' ? (
+          <a
+            href='/auth'
+            className='rounded-lg border px-4 py-1 dark:hover:border-neutral-300 dark:hover:text-neutral-300'
+          >
+            Login
+          </a>
+        ) : (
+          <a
+            href='/auth?form=signup'
+            className='rounded-lg border px-4 py-1 dark:hover:border-neutral-300 dark:hover:text-neutral-300'
+          >
+            Signup
+          </a>
+        )}
       </div>
     </div>
-  );
-};
+  )
+}

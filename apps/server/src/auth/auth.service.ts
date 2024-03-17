@@ -27,4 +27,35 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
   }
+
+  async signUp(user: {
+    fname: string;
+    lname: string;
+    country: string;
+    phone: string;
+    username: string;
+    email: string;
+    password: string;
+  }): Promise<any> {
+    console.log(user);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const newUser = await this.usersService.create({
+      name: user.fname + ' ' + user.lname,
+      email: user.email,
+      hashedPassword,
+      username: user.username,
+      phone: user.phone,
+      country: user.country,
+    });
+    if (newUser) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { hashedPassword: _, ...result } = newUser;
+      const payload = { id: newUser.id, image: newUser.image };
+      return {
+        access_token: await this.jwtService.signAsync(payload),
+      };
+    } else {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+  }
 }
