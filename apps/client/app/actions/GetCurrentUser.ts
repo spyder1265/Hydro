@@ -1,22 +1,23 @@
-import { User } from "@prisma/client";
+import { User } from '@prisma/client'
 
 const getCurrentUser = async () => {
   try {
-    const token = await localStorage.getItem("token");
+    if (typeof localStorage === 'undefined') return
+    const token = await localStorage.getItem('token')
     if (token !== null) {
       const user = await fetch(`http://localhost:3001/users/user`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const userData: User = await user.json();
-      return userData;
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      const userData: User = await user.json()
+      return userData
     }
   } catch (error) {
-    console.log("Not authorized", error);
+    console.log('Not authorized', error)
   }
-};
+}
 
-export default getCurrentUser;
+export default getCurrentUser

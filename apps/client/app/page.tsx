@@ -7,6 +7,7 @@ import { Separator } from '@/components/Separator'
 import Navbar from '@/components/Navbar/Navbar'
 import { useLayoutEffect, useState } from 'react'
 import { users } from '@/data'
+import { BackgroundBeams } from '@/components/Animations/ui/Background-Beams'
 
 export default function Landing() {
   const [hasMounted, setHasMounted] = useState(false)

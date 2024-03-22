@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { SparklesCore } from '../Animations/ui/sparkles'
-import { useTheme } from '@/app/contexts/ThemeContext'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export function SparklesPreview() {
   const { theme, toggleTheme } = useTheme()

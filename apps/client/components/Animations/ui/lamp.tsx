@@ -3,7 +3,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
 import { TypewriterEffect } from './typewriter-effect'
-import { useTheme } from '@/app/contexts/ThemeContext'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export function LampDemo() {
   const words = [

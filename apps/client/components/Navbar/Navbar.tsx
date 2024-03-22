@@ -1,5 +1,5 @@
 'use client'
-import { Fragment, useState } from 'react'
+import { FC, Fragment, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
@@ -12,6 +12,18 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import ThemeSelector from './ThemeSelector'
+import { useSidebarContext } from '@/contexts/SidebarContext'
+import { isSmallScreen } from '@/helpers/is-small-screen'
+import {
+  DarkThemeToggle,
+  Navbar as FlowbiteNavbar,
+  NavbarCollapse,
+  NavbarLink,
+  NavbarToggle
+} from 'flowbite-react'
+import Image from 'next/image'
+import { BiArrowToRight, BiLock } from 'react-icons/bi'
+import { HiMenuAlt1, HiMenuAlt3, HiX } from 'react-icons/hi'
 
 const products = [
   {
@@ -47,17 +59,6 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = usePathname()
   const router = useRouter()
-
-  const handleSearch = (value: string) => {
-    if (location !== '/vehicles') {
-      router.push(`/vehicles?query=${encodeURIComponent(value)}`)
-    }
-
-    onSearch?.(value)
-    if (mobileMenuOpen) {
-      setMobileMenuOpen(false)
-    }
-  }
 
   return (
     <header
@@ -330,5 +331,44 @@ export const FormNav = () => {
         )}
       </div>
     </div>
+  )
+}
+
+export const DashboardNavbar: FC<Record<string, never>> = function () {
+  const { isCollapsed: isSidebarCollapsed, setCollapsed: setSidebarCollapsed } =
+    useSidebarContext()
+
+  return (
+    <header>
+      <FlowbiteNavbar
+        fluid
+        className='fixed top-0 z-30 w-full border-b border-gray-200 bg-white p-0 sm:p-0 dark:border-gray-700 dark:bg-neutral-800'
+      >
+        <div className='relative w-full p-3 pr-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <button
+                aria-controls='sidebar'
+                aria-expanded
+                className='mr-2 cursor-pointer rounded p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700'
+                onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
+              >
+                {isSidebarCollapsed || !isSmallScreen() ? (
+                  <HiMenuAlt1 className='h-6 w-6' />
+                ) : (
+                  <HiX className='h-6 w-6' />
+                )}
+              </button>
+              <FlowbiteNavbar.Brand href='/'>
+                <h1 className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl dark:from-slate-300 dark:to-slate-500'>
+                  Hydro
+                </h1>
+              </FlowbiteNavbar.Brand>
+            </div>
+            <ThemeSelector />
+          </div>
+        </div>
+      </FlowbiteNavbar>
+    </header>
   )
 }
