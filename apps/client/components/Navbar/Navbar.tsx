@@ -84,7 +84,10 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           </button>
         </div>
 
-        <div className='flex h-6 items-center place-self-center md:h-10 lg:flex-1'>
+        <div
+          className='ml-7 flex h-6 items-center
+place-self-center  md:m-0 md:h-10 lg:flex-1'
+        >
           <a
             href='/'
             className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl dark:from-slate-300 dark:to-slate-500'
@@ -93,7 +96,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           </a>
         </div>
 
-        <div className='my-auto ml-5 h-full justify-center pl-2 lg:hidden'>
+        <div className='my-auto  h-full justify-center lg:hidden'>
           <ThemeSelector />
         </div>
 

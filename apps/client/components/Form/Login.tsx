@@ -7,8 +7,13 @@ import toast from 'react-hot-toast'
 import { FaApple } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
 import Button from '../Button'
+import { loginSchema } from '@/lib/schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 interface ILogin {}
+
+type Inputs = z.infer<typeof loginSchema>
 
 const Login: React.FC<ILogin> = ({}) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,9 +22,11 @@ const Login: React.FC<ILogin> = ({}) => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm<Inputs>({
+    resolver: zodResolver(loginSchema)
+  })
 
-  const submit: SubmitHandler<FieldValues> = async data => {
+  const submit: SubmitHandler<Inputs> = async data => {
     setIsLoading(true)
     if (!errors.email && !errors.password) {
       const promise = new Promise<string>((resolve, reject) => {
@@ -63,28 +70,40 @@ const Login: React.FC<ILogin> = ({}) => {
         <div className='mb-4'>
           <Input
             id='email'
+            //@ts-ignore
             register={register}
             errors={errors}
             label='Email'
             type='email'
+            disabled={isLoading}
             primativeProps={{
               placeholder: 'user@example.com',
               autoComplete: 'email'
             }}
           />
+          <div className='h-14px [mt-1] pl-1 text-sm capitalize text-red-400'>
+            {/* @ts-ignore */}
+            {errors.email?.message && errors.email.message}
+          </div>
         </div>
         <div className=''>
           <Input
             id='password'
+            //@ts-ignore
             register={register}
             errors={errors}
             label='Password'
             type='password'
+            disabled={isLoading}
             primativeProps={{
               placeholder: '*********',
               autoComplete: 'current-password'
             }}
           />
+          <div className='h-14px [mt-1] pl-1 text-sm text-red-400'>
+            {/* @ts-ignore */}
+            {errors.password?.message && errors.password.message}
+          </div>
         </div>
 
         {/* Forgot password */}

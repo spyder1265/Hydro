@@ -38,8 +38,6 @@ const Signup: React.FC<ISignup> = ({}) => {
   const {
     register,
     handleSubmit,
-    watch,
-    reset,
     trigger,
     formState: { errors }
   } = useForm<Inputs>({
@@ -226,7 +224,7 @@ const Signup: React.FC<ISignup> = ({}) => {
                   autoComplete: 'username'
                 }}
               />
-              <div className='h-14px [mt-1] pl-1 text-sm text-red-400'>
+              <div className='h-14px [mt-1] pl-1 text-sm capitalize text-red-400'>
                 {errors.username?.message && errors.username.message}
               </div>
             </div>
@@ -245,7 +243,7 @@ const Signup: React.FC<ISignup> = ({}) => {
                   autoComplete: 'email'
                 }}
               />
-              <div className='h-14px [mt-1] pl-1 text-sm text-red-400'>
+              <div className='h-14px [mt-1] pl-1 text-sm capitalize text-red-400'>
                 {errors.email?.message && errors.email.message}
               </div>
             </div>
