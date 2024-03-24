@@ -84,7 +84,7 @@ function Auth() {
           <FormNav />
         </div>
         <div className='flex h-full w-full flex-col items-center justify-center md:flex-row'>
-          <div className='glass flex h-auto w-4/5 flex-col items-center justify-around md:flex md:h-full md:basis-1/3 md:shadow-none dark:bg-neutral-900 '>
+          <div className='glass md:shadow-non flex h-auto w-4/5 flex-col items-center justify-around md:flex md:h-full md:basis-1/3'>
             <div className='hidden w-full md:flex'>
               <FormNav />
             </div>
@@ -93,9 +93,7 @@ function Auth() {
             ) : form === 'authenticated' && !isloading ? (
               <HasAuth user={user[0]} />
             ) : (
-              // <FormProvider {...methods}>
               <Signup />
-              // </FormProvider>
             )}
           </div>
           <div className='relative z-20 hidden h-full basis-2/3 md:flex'>

@@ -24,6 +24,7 @@ export default function Landing() {
           <section className='relative flex h-screen w-full flex-col items-center dark:bg-slate-950'>
             <LampDemo />
             <Separator className='my-4' />
+            <BackgroundBeams />
           </section>
           <section className='flex h-full w-full flex-col items-center overflow-hidden dark:bg-slate-950'>
             <ContainerScroll

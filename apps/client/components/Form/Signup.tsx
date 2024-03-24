@@ -61,7 +61,7 @@ const Signup: React.FC<ISignup> = ({}) => {
                 localStorage.setItem('token', callback.data.access_token)
                 resolve('Signup successful!')
                 setTimeout(() => {
-                  router.push('/home')
+                  router.push('/dashboard')
                 }, 1000)
               }
               reject(new Error('Invalid credentials'))

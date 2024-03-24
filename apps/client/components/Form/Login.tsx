@@ -40,7 +40,7 @@ const Login: React.FC<ILogin> = ({}) => {
                 localStorage.setItem('token', callback.data.access_token)
                 resolve('Login successful!')
                 setTimeout(() => {
-                  router.push('/home')
+                  router.push('/dashboard')
                 }, 1000)
               }
               reject(new Error('Invalid credentials'))

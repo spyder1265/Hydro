@@ -1,6 +1,6 @@
 'use client'
 import { useSidebarContext } from '@/contexts/SidebarContext'
-import { Avatar, ListGroup, Sidebar } from 'flowbite-react'
+import { Avatar, CustomFlowbiteTheme, ListGroup, Sidebar } from 'flowbite-react'
 import { useState, type FC } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import {
@@ -13,11 +13,13 @@ import {
   HiViewBoards
 } from 'react-icons/hi'
 import { twMerge } from 'tailwind-merge'
-
 import { motion } from 'framer-motion'
 import { BiArrowToLeft } from 'react-icons/bi'
 import { HiUserCircle } from 'react-icons/hi'
+import { HiCog } from 'react-icons/hi'
 import { User } from '@prisma/client'
+import { usePathname, useRouter } from 'next/navigation'
+import { HiKey } from 'react-icons/hi2'
 
 interface IDashboardSidebar {
   user?: User
@@ -26,86 +28,134 @@ interface IDashboardSidebar {
 export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
   const { isCollapsed } = useSidebarContext()
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const avatarClick = () => {
+    if (isCollapsed) {
+      router.push('/dashboard#profile')
+    } else {
+      setIsOpen(!isOpen && isCollapsed)
+    }
+  }
+
+  const isActive = (path: string) => {
+    return pathname === path
+  }
+
+  const customTheme: CustomFlowbiteTheme['sidebar'] = {
+    root: {
+      base: 'h-full ',
+      collapsed: {
+        on: 'w-16 bg-neutral-50 dark:bg-neutral-950',
+        off: 'w-64 bg-neutral-50 dark:bg-neutral-950'
+      },
+      inner:
+        'h-full overflow-y-auto overflow-x-hidden rounded bg-neutral-50 py-4 px-3 dark:bg-neutral-950'
+    },
+
+    item: {
+      base: 'flex items-center justify-center rounded-lg p-2 text-base font-normal text-neutral-900 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700',
+      active: 'bg-neutral-500 dark:bg-neutral-700',
+      collapsed: {
+        insideCollapse: 'group w-full pl-8 transition duration-75',
+        noIcon: 'font-bold'
+      },
+      content: {
+        base: 'px-3 flex-1 whitespace-nowrap'
+      },
+      icon: {
+        base: 'h-6 w-6 flex-shrink-0 text-neutral-500 transition duration-75 group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-white',
+        active: 'text-neutral-700 dark:text-neutral-100'
+      },
+      label: '',
+      listItem: ''
+    },
+    items: {
+      base: ''
+    },
+    itemGroup: {
+      base: 'mt-4 space-y-2 border-t border-neutral-200 pt-4 first:mt-0 first:border-t-0 first:pt-0 dark:border-neutral-700'
+    }
+  }
 
   return (
     <Sidebar
       aria-label='Sidebar'
       collapsed={isCollapsed}
+      theme={customTheme}
       id={'sidebar'}
+      color='neutral'
       className={twMerge(
-        'fixed left-0 z-20 flex h-full flex-col justify-between border-r border-gray-200 bg-neutral-50 p-0 transition-all  duration-75 lg:flex dark:border-gray-700 dark:bg-neutral-950',
+        'fixed left-0 z-20 flex h-full flex-col justify-between border-r border-neutral-200 bg-neutral-50 p-0 transition-all  duration-75 lg:flex dark:border-neutral-700 dark:bg-neutral-950',
         isCollapsed && 'hidden w-16'
       )}
     >
-      <div className='absolute left-0 h-screen w-full flex-col bg-neutral-50 dark:bg-neutral-800'>
+      <div className='absolute left-0 h-screen w-full flex-col bg-neutral-50 pt-16 dark:bg-neutral-800'>
         <Sidebar.Items className='flex h-[87vh] flex-col justify-between '>
           <Sidebar.ItemGroup>
-            <Sidebar.Item href='#Dashboard' icon={HiChartPie}>
+            <Sidebar.Item
+              href='/dashboard'
+              active={isActive('/') || isActive('/dashboard')}
+              icon={HiChartPie}
+            >
               Dashboard
             </Sidebar.Item>
-            <Sidebar.Item href='#Kanban' icon={HiViewBoards}>
-              Kanban
+
+            {/* content */}
+
+            <Sidebar.Item
+              href='/dashboard/content'
+              active={isActive('/dashboard/content')}
+              icon={HiTable}
+            >
+              Content
             </Sidebar.Item>
-            <Sidebar.Item href='#Inbox' icon={HiInbox}>
-              Inbox
+
+            {/* settings */}
+            <Sidebar.Item
+              href='/dashboard/settings'
+              active={isActive('/dashboard/settings')}
+              icon={HiCog}
+            >
+              Settings
             </Sidebar.Item>
-            <Sidebar.Item href='#Users' icon={HiUser}>
-              Users
-            </Sidebar.Item>
-            <Sidebar.Item href='#Products' icon={HiShoppingBag}>
-              Products
-            </Sidebar.Item>
-            <Sidebar.Item href='#SignUp' icon={HiTable}>
-              Sign Up
+
+            {/* Keys */}
+            <Sidebar.Item
+              href='/dashboard/keys'
+              active={isActive('/dashboard/keys')}
+              icon={HiKey}
+            >
+              Keys
             </Sidebar.Item>
           </Sidebar.ItemGroup>
 
           <div>
-            <Sidebar.ItemGroup className='flex flex-col gap-1'>
-              <Sidebar.Item
-                href='#Upgrade'
-                icon={HiChartPie}
-                className='cursor-pointer self-end justify-self-end'
-              >
-                Upgrade to Pro
-              </Sidebar.Item>
-            </Sidebar.ItemGroup>
-
             <div
-              className={`relative flex w-full items-center justify-evenly gap-x-2 border-t ${
-                !isCollapsed && 'border-slate-300'
-              } pt-5`}
-            >
-              {isOpen && (
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ ease: 'easeInOut', duration: 0.15 }}
-                  className={`absolute ${
-                    isCollapsed ? '-right-20 -top-32' : '-right-1 -top-32 '
-                  } z-50 flex justify-center`}
-                >
-                  <ListGroup className='w-48' color='dark'>
-                    <ListGroup.Item icon={HiUserCircle}>Profile</ListGroup.Item>
-                    <ListGroup.Item icon={HiOutlineAdjustments}>
-                      Settings
-                    </ListGroup.Item>
-                    <ListGroup.Item
-                      icon={BiArrowToLeft}
-                      // onClick={() => signOut()}
-                    >
-                      Logout
-                    </ListGroup.Item>
-                  </ListGroup>
-                </motion.div>
-              )}
+              className={`mb-4 flex h-[1.2px] ${!isCollapsed && 'bg-neutral-400'} `}
+            ></div>
 
-              <div className='inline-flex w-full items-center gap-2'>
+            {isCollapsed ? (
+              <Sidebar.ItemGroup>
+                <Sidebar.Item
+                  href={'/dashboard/' + user?.username}
+                  active={isActive('/dashboard/' + user?.username)}
+                  className='cursor-pointer'
+                >
+                  {user?.name}
+                </Sidebar.Item>
+              </Sidebar.ItemGroup>
+            ) : (
+              <a
+                href='profile'
+                className={`mx-3 my-2 inline-flex w-full items-center hover:opacity-75 ${isCollapsed && 'justify-center'} gap-2`}
+              >
                 <Avatar
                   img={user?.image || '/profile-picture-5.jpg'}
                   alt='Profile Picture'
                   rounded
-                  onClick={() => setIsOpen(!isOpen && isCollapsed)}
+                  onClick={() => avatarClick}
                 />
                 <div className={isCollapsed ? 'hidden' : 'block'}>
                   <p className='inline-flex items-center gap-1 text-sm font-semibold text-[#475569] dark:text-white'>
@@ -120,19 +170,8 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
                     {user?.email}
                   </p>
                 </div>
-              </div>
-
-              {isCollapsed ? (
-                <></>
-              ) : (
-                <button
-                  className='text-[#475569] dark:text-white dark:hover:text-neutral-300'
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  <BsThreeDotsVertical className='h-4 w-4 ' />
-                </button>
-              )}
-            </div>
+              </a>
+            )}
           </div>
         </Sidebar.Items>
       </div>

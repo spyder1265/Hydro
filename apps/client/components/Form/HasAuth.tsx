@@ -32,7 +32,7 @@ const HasAuth: React.FC<IHasAuth> = ({ user }) => {
 
         <Button
           onClick={() => {
-            router.push('/home')
+            router.push('/dashboard')
           }}
           type='button'
           className='gap-2 underline underline-offset-1 dark:text-white'

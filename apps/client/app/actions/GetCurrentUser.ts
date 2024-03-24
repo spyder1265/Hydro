@@ -13,6 +13,7 @@ const getCurrentUser = async () => {
         }
       })
       const userData: User = await user.json()
+      // console.log('userData', userData)
       return userData
     }
   } catch (error) {

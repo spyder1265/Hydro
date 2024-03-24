@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { ThemeModeScript } from 'flowbite-react'
 import Providers from '@/Providers/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
