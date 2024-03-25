@@ -1,5 +1,5 @@
 'use client'
-import { SidebarProvider, useSidebarContext } from '@/contexts/SidebarContext'
+import { SidebarProvider } from '@/contexts/SidebarContext'
 import {
   useState,
   type FC,
@@ -11,6 +11,7 @@ import { DashboardSidebar } from '@/components/Dashboard/Sidebar/sidebar'
 import { DashboardNavbar } from '@/components/Navbar/Navbar'
 import getCurrentUser from '../actions/GetCurrentUser'
 import { User } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 
 const DashboardLayout: FC<PropsWithChildren> = function ({ children }) {
   return (
@@ -23,6 +24,7 @@ const DashboardLayout: FC<PropsWithChildren> = function ({ children }) {
 const DashboardLayoutContent: FC<PropsWithChildren> = function ({ children }) {
   const [hasMounted, setHasMounted] = useState(false)
   const [user, setUser] = useState<User>({} as User)
+  const router = useRouter()
 
   useLayoutEffect(() => {
     const fetchUser = async () => {
@@ -33,7 +35,11 @@ const DashboardLayoutContent: FC<PropsWithChildren> = function ({ children }) {
 
     fetchUser()
       .then(user => {
-        setUser(user!)
+        if (user && user.id) {
+          setUser(user!)
+        } else {
+          router.push('/auth')
+        }
       })
       .finally(() => {
         setHasMounted(true)

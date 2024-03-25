@@ -7,23 +7,14 @@ import {
   UserGroupIcon,
   XMarkIcon,
   UserIcon,
-  PhoneIcon,
-  HomeIcon
+  PhoneIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import ThemeSelector from './ThemeSelector'
 import { useSidebarContext } from '@/contexts/SidebarContext'
 import { isSmallScreen } from '@/helpers/is-small-screen'
-import {
-  DarkThemeToggle,
-  Navbar as FlowbiteNavbar,
-  NavbarCollapse,
-  NavbarLink,
-  NavbarToggle
-} from 'flowbite-react'
-import Image from 'next/image'
-import { BiArrowToRight, BiLock } from 'react-icons/bi'
-import { HiMenuAlt1, HiMenuAlt3, HiX } from 'react-icons/hi'
+import { Navbar as FlowbiteNavbar } from 'flowbite-react'
+import { HiMenuAlt1, HiX } from 'react-icons/hi'
 
 const products = [
   {
@@ -308,12 +299,14 @@ export const FormNav = () => {
   const searchparams = useSearchParams()
   return (
     <div className='flex w-full justify-between px-9 text-neutral-950 dark:text-neutral-50 '>
-      <a
-        href='/'
-        className='hover:text-neutral-600 hover:dark:text-neutral-300'
-      >
-        <HomeIcon className='h-7 ' />
-      </a>
+      <div className='-m-1.5 p-1.5'>
+        <a
+          href='/'
+          className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent hover:opacity-75 md:text-2xl dark:from-slate-300 dark:to-slate-500'
+        >
+          Hydro
+        </a>
+      </div>
       <div className='flex gap-2'>
         <ThemeSelector />
 
@@ -356,7 +349,9 @@ export const DashboardNavbar: FC<Record<string, never>> = function () {
                 className='mr-2 cursor-pointer rounded p-2 hover:opacity-75 dark:text-gray-400 dark:hover:text-white'
                 onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
               >
-                {isSidebarCollapsed && !isSmallScreen() ? (
+                {isSidebarCollapsed && isSmallScreen() ? (
+                  <HiMenuAlt1 className='h-6 w-6' />
+                ) : isSidebarCollapsed && !isSmallScreen() ? (
                   <HiMenuAlt1 className='h-6 w-6' />
                 ) : (
                   <HiX className='h-6 w-6' />

@@ -45,12 +45,11 @@ const Signup: React.FC<ISignup> = ({}) => {
   })
 
   const processForm: SubmitHandler<Inputs> = data => {
-    setIsLoading(true)
-
     if (!errors.root?.message) {
       console.log(data)
 
       const promise = new Promise<string>((resolve, reject) => {
+        setIsLoading(true)
         setTimeout(() => {
           axios
             .post('http://localhost:3001/auth/signup', {
@@ -63,8 +62,10 @@ const Signup: React.FC<ISignup> = ({}) => {
                 setTimeout(() => {
                   router.push('/dashboard')
                 }, 1000)
+              } else {
+                reject(new Error('unauthorized'))
+                setIsLoading(false)
               }
-              reject(new Error('Invalid credentials'))
             })
             .catch(reject)
         }, 2000)
@@ -79,7 +80,6 @@ const Signup: React.FC<ISignup> = ({}) => {
           setIsLoading(false)
         })
     }
-    setIsLoading(false)
   }
 
   type FieldName = keyof Inputs

@@ -2,13 +2,10 @@
 import { useSidebarContext } from '@/contexts/SidebarContext'
 import { twMerge } from 'tailwind-merge'
 
-interface Ipage {
-  params: { username: string }
-}
+interface Ipage {}
 
-const page: React.FC<Ipage> = ({ params }) => {
+const page: React.FC<Ipage> = ({}) => {
   const { isCollapsed } = useSidebarContext()
-  const decoded = decodeURIComponent(params.username.toString())
 
   return (
     <div
@@ -21,7 +18,7 @@ const page: React.FC<Ipage> = ({ params }) => {
       <div className='flex h-full w-full flex-col items-center p-24  dark:text-neutral-300'>
         <div className='flex flex-col items-center'>
           {/* content */}
-          <h1>{decoded}</h1>
+          <h1>Content</h1>
         </div>
       </div>
     </div>

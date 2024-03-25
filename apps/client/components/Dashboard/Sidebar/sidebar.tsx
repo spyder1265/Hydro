@@ -1,25 +1,15 @@
 'use client'
 import { useSidebarContext } from '@/contexts/SidebarContext'
-import { Avatar, CustomFlowbiteTheme, ListGroup, Sidebar } from 'flowbite-react'
+import { Avatar, CustomFlowbiteTheme, Sidebar } from 'flowbite-react'
 import { useState, type FC } from 'react'
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import {
-  HiChartPie,
-  HiInbox,
-  HiOutlineAdjustments,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards
-} from 'react-icons/hi'
+import { HiChartPie, HiTable } from 'react-icons/hi'
 import { twMerge } from 'tailwind-merge'
-import { motion } from 'framer-motion'
 import { BiArrowToLeft } from 'react-icons/bi'
-import { HiUserCircle } from 'react-icons/hi'
 import { HiCog } from 'react-icons/hi'
 import { User } from '@prisma/client'
 import { usePathname, useRouter } from 'next/navigation'
 import { HiKey } from 'react-icons/hi2'
+import toast from 'react-hot-toast'
 
 interface IDashboardSidebar {
   user?: User
@@ -30,6 +20,7 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const encodedName = encodeURIComponent(user?.name || 'user')
 
   const avatarClick = () => {
     if (isCollapsed) {
@@ -41,6 +32,34 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
 
   const isActive = (path: string) => {
     return pathname === path
+  }
+
+  const handleSignOut = () => {
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        localStorage && localStorage.removeItem('token')
+        if (localStorage && !localStorage.getItem('token')) {
+          resolve('SignOut successful!')
+          router.push('/auth')
+        } else {
+          reject('SignOut failed!')
+        }
+      }, 2000)
+    })
+
+    toast.promise(
+      promise,
+      {
+        loading: 'Signing Out...',
+        success: <b>GoodBye</b>,
+        error: <b>Could not SignOut</b>
+      },
+      {
+        success: {
+          icon: '👋'
+        }
+      }
+    )
   }
 
   const customTheme: CustomFlowbiteTheme['sidebar'] = {
@@ -55,8 +74,8 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
     },
 
     item: {
-      base: 'flex items-center justify-center rounded-lg p-2 text-base font-normal text-neutral-900 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700',
-      active: 'bg-neutral-500 dark:bg-neutral-700',
+      base: 'flex items-center justify-center hover:cursor-pointer rounded-lg p-2 text-base font-normal text-neutral-900 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700',
+      active: 'bg-neutral-200 opacity-60  dark:bg-neutral-700',
       collapsed: {
         insideCollapse: 'group w-full pl-8 transition duration-75',
         noIcon: 'font-bold'
@@ -132,45 +151,61 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
           </Sidebar.ItemGroup>
 
           <div>
-            <div
-              className={`mb-4 flex h-[1.2px] ${!isCollapsed && 'bg-neutral-400'} `}
-            ></div>
+            <div className={`mb-4 flex h-[1.2px]  `}></div>
 
             {isCollapsed ? (
               <Sidebar.ItemGroup>
+                {/* signout button */}
                 <Sidebar.Item
-                  href={'/dashboard/' + user?.username}
-                  active={isActive('/dashboard/' + user?.username)}
-                  className='cursor-pointer'
+                  onClick={() => handleSignOut()}
+                  icon={BiArrowToLeft}
                 >
-                  {user?.name}
+                  SignOut
+                </Sidebar.Item>
+
+                {/* profile */}
+                <Sidebar.Item
+                  href={'/dashboard/' + user?.name}
+                  active={isActive('/dashboard/' + encodedName)}
+                  className='cursor-pointer'
+                  image={user?.image || '/profile-picture-5.jpg'}
+                >
+                  {user?.name || "user's name"}
                 </Sidebar.Item>
               </Sidebar.ItemGroup>
             ) : (
-              <a
-                href='profile'
-                className={`mx-3 my-2 inline-flex w-full items-center hover:opacity-75 ${isCollapsed && 'justify-center'} gap-2`}
-              >
-                <Avatar
-                  img={user?.image || '/profile-picture-5.jpg'}
-                  alt='Profile Picture'
-                  rounded
-                  onClick={() => avatarClick}
-                />
-                <div className={isCollapsed ? 'hidden' : 'block'}>
-                  <p className='inline-flex items-center gap-1 text-sm font-semibold text-[#475569] dark:text-white'>
-                    <span className='capitalize'>
-                      {user?.name?.split(' ')[0]}
-                    </span>
-                    <span className='capitalize'>
-                      {user?.name?.split(' ')[1]}
-                    </span>
-                  </p>
-                  <p className='text-xs text-[#475569] dark:text-white'>
-                    {user?.email}
-                  </p>
-                </div>
-              </a>
+              <Sidebar.ItemGroup>
+                <Sidebar.Item
+                  onClick={() => handleSignOut()}
+                  icon={BiArrowToLeft}
+                >
+                  SignOut
+                </Sidebar.Item>
+                <a
+                  href={'/dashboard/' + encodedName}
+                  className={`inline-flex w-full items-center ${isActive('/dashboard/' + encodedName) && 'bg-neutral-200 dark:bg-neutral-700'} rounded-lg px-2 py-2 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 ${isCollapsed && 'justify-center'} gap-2`}
+                >
+                  <Avatar
+                    img={user?.image || '/profile-picture-5.jpg'}
+                    alt='Profile Picture'
+                    rounded
+                    onClick={() => avatarClick}
+                  />
+                  <div className={isCollapsed ? 'hidden' : 'block'}>
+                    <p className='inline-flex items-center gap-1 text-sm font-semibold text-[#475569] dark:text-white'>
+                      <span className='capitalize'>
+                        {user?.name?.split(' ')[0]}
+                      </span>
+                      <span className='capitalize'>
+                        {user?.name?.split(' ')[1]}
+                      </span>
+                    </p>
+                    <p className='text-xs text-[#475569] dark:text-white'>
+                      {user?.email}
+                    </p>
+                  </div>
+                </a>
+              </Sidebar.ItemGroup>
             )}
           </div>
         </Sidebar.Items>

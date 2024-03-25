@@ -27,8 +27,8 @@ const Login: React.FC<ILogin> = ({}) => {
   })
 
   const submit: SubmitHandler<Inputs> = async data => {
-    setIsLoading(true)
     if (!errors.email && !errors.password) {
+      setIsLoading(true)
       const promise = new Promise<string>((resolve, reject) => {
         setTimeout(() => {
           axios
@@ -42,8 +42,10 @@ const Login: React.FC<ILogin> = ({}) => {
                 setTimeout(() => {
                   router.push('/dashboard')
                 }, 1000)
+              } else {
+                reject(new Error('Invalid credentials'))
+                setIsLoading(false)
               }
-              reject(new Error('Invalid credentials'))
             })
             .catch(reject)
         }, 2000)
@@ -59,11 +61,10 @@ const Login: React.FC<ILogin> = ({}) => {
           setIsLoading(false)
         })
     }
-    setIsLoading(false)
   }
 
   return (
-    <div className='flex h-auto w-full flex-col md:p-4 dark:text-neutral-200'>
+    <div className='flex h-auto w-full flex-col  md:p-4 dark:text-neutral-200'>
       <div className='text-center text-3xl font-bold'>Welcome Back</div>
       <div className='text-center'>Sign in to your account</div>
       <form className='w-full p-4' onSubmit={handleSubmit(submit)}>

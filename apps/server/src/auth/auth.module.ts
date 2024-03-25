@@ -14,7 +14,7 @@ import { jwtConstants } from './constants';
       global: true,
       secret: jwtConstants.secret,
       signOptions: {
-        expiresIn: '3600s',
+        expiresIn: '86400s',
       },
     }),
   ],

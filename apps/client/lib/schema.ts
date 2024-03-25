@@ -14,3 +14,9 @@ export const loginSchema = z.object({
   email: z.string().min(1, 'email is required').email(),
   password: z.string().min(1, 'password is required')
 })
+
+export const api_keySchema = z.object({
+  api_url: z.string().min(1, 'API URL is required'),
+  api_key: z.string().min(1, 'API Key is required'),
+  password: z.string().min(1, 'password is required')
+})
