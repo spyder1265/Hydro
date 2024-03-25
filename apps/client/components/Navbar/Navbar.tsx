@@ -312,7 +312,7 @@ export const FormNav = () => {
           </a>
         ) : (
           <a
-            href='/auth?form=Signup'
+            href='/auth?form=signup'
             className='rounded-lg border px-4 py-1 dark:hover:border-neutral-300 dark:hover:text-neutral-300'
           >
             Signup
