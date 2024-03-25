@@ -6,7 +6,6 @@ import {
   Bars3BottomLeftIcon,
   UserGroupIcon,
   XMarkIcon,
-  UserIcon,
   PhoneIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
@@ -28,12 +27,6 @@ const products = [
     description: 'Get in touch with us',
     href: '#contact',
     icon: PhoneIcon
-  },
-  {
-    name: 'Admin',
-    description: 'Login as admin to add new vehicles',
-    href: '#admin',
-    icon: UserIcon
   }
 ]
 
@@ -319,7 +312,7 @@ export const FormNav = () => {
           </a>
         ) : (
           <a
-            href='/auth?form=signup'
+            href='/auth?form=Signup'
             className='rounded-lg border px-4 py-1 dark:hover:border-neutral-300 dark:hover:text-neutral-300'
           >
             Signup
