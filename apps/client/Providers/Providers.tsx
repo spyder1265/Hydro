@@ -1,6 +1,8 @@
-import { ThemeProvider } from '@/app/contexts/ThemeContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import Page from '@/components/Animations/Page'
 import { Toaster } from 'react-hot-toast'
+import { flowbiteTheme } from '@/app/theme'
+import { Flowbite } from 'flowbite-react'
 
 interface IProviders {
   children: React.ReactNode

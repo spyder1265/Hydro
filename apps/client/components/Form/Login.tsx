@@ -7,8 +7,13 @@ import toast from 'react-hot-toast'
 import { FaApple } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
 import Button from '../Button'
+import { loginSchema } from '@/lib/schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
 interface ILogin {}
+
+type Inputs = z.infer<typeof loginSchema>
 
 const Login: React.FC<ILogin> = ({}) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,11 +22,13 @@ const Login: React.FC<ILogin> = ({}) => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm<Inputs>({
+    resolver: zodResolver(loginSchema)
+  })
 
-  const submit: SubmitHandler<FieldValues> = async data => {
-    setIsLoading(true)
+  const submit: SubmitHandler<Inputs> = async data => {
     if (!errors.email && !errors.password) {
+      setIsLoading(true)
       const promise = new Promise<string>((resolve, reject) => {
         setTimeout(() => {
           axios
@@ -33,10 +40,12 @@ const Login: React.FC<ILogin> = ({}) => {
                 localStorage.setItem('token', callback.data.access_token)
                 resolve('Login successful!')
                 setTimeout(() => {
-                  router.push('/home')
+                  router.push('/dashboard')
                 }, 1000)
+              } else {
+                reject(new Error('Invalid credentials'))
+                setIsLoading(false)
               }
-              reject(new Error('Invalid credentials'))
             })
             .catch(reject)
         }, 2000)
@@ -52,39 +61,50 @@ const Login: React.FC<ILogin> = ({}) => {
           setIsLoading(false)
         })
     }
-    setIsLoading(false)
   }
 
   return (
-    <div className='flex h-auto w-full flex-col md:p-4 dark:text-neutral-200'>
+    <div className='flex h-auto w-full flex-col  md:p-4 dark:text-neutral-200'>
       <div className='text-center text-3xl font-bold'>Welcome Back</div>
       <div className='text-center'>Sign in to your account</div>
       <form className='w-full p-4' onSubmit={handleSubmit(submit)}>
         <div className='mb-4'>
           <Input
             id='email'
+            //@ts-ignore
             register={register}
             errors={errors}
             label='Email'
             type='email'
+            disabled={isLoading}
             primativeProps={{
               placeholder: 'user@example.com',
               autoComplete: 'email'
             }}
           />
+          <div className='h-14px [mt-1] pl-1 text-sm capitalize text-red-400'>
+            {/* @ts-ignore */}
+            {errors.email?.message && errors.email.message}
+          </div>
         </div>
         <div className=''>
           <Input
             id='password'
+            //@ts-ignore
             register={register}
             errors={errors}
             label='Password'
             type='password'
+            disabled={isLoading}
             primativeProps={{
               placeholder: '*********',
               autoComplete: 'current-password'
             }}
           />
+          <div className='h-14px [mt-1] pl-1 text-sm text-red-400'>
+            {/* @ts-ignore */}
+            {errors.password?.message && errors.password.message}
+          </div>
         </div>
 
         {/* Forgot password */}

@@ -3,25 +3,29 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
 import { TypewriterEffect } from './typewriter-effect'
-import { useTheme } from '@/app/contexts/ThemeContext'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export function LampDemo() {
   const words = [
     {
-      text: 'Build'
+      text: 'Build',
+      className: 'text-3xl'
     },
     {
-      text: 'awesome'
+      text: 'awesome',
+      className: 'text-3xl'
     },
     {
-      text: 'apps'
+      text: 'apps',
+      className: 'text-3xl'
     },
     {
-      text: 'with'
+      text: 'with',
+      className: 'text-3xl'
     },
     {
       text: 'Hydro.',
-      className: 'text-neutral-900 dark:text-blue-500'
+      className: 'text-neutral-900 text-3xl dark:text-blue-500'
     }
   ]
 

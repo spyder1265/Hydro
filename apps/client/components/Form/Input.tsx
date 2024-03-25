@@ -15,6 +15,7 @@ interface InputProps {
   formatPrice?: boolean
   register: UseFormRegister<Inputs>
   errors: FieldErrors
+  className?: string
   primativeProps: React.InputHTMLAttributes<HTMLInputElement>
 }
 
@@ -25,11 +26,12 @@ const Input: React.FC<InputProps> = ({
   disabled,
   register,
   errors,
-  primativeProps
+  primativeProps,
+  className
 }) => {
   const [show, setShow] = useState(false)
   return (
-    <div className='flex flex-col'>
+    <div className={`flex ${className}  flex-col`}>
       <label htmlFor={id} className={`text-md`}>
         {label} :
       </label>

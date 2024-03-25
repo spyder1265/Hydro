@@ -2,6 +2,7 @@ import { User } from '@prisma/client'
 import Button from '../Button'
 import { FaArrowRightToBracket, FaHouseLock } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 interface IHasAuth {
   user: User
@@ -11,8 +12,31 @@ const HasAuth: React.FC<IHasAuth> = ({ user }) => {
   const router = useRouter()
 
   const Logout = () => {
-    localStorage.removeItem('token')
-    router.refresh()
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        localStorage && localStorage.removeItem('token')
+        if (localStorage && !localStorage.getItem('token')) {
+          resolve('SignOut successful!')
+          router.push('/auth')
+        } else {
+          reject('SignOut failed!')
+        }
+      }, 2000)
+    })
+
+    toast.promise(
+      promise,
+      {
+        loading: 'Signing Out...',
+        success: <b>GoodBye</b>,
+        error: <b>Could not SignOut</b>
+      },
+      {
+        success: {
+          icon: '👋'
+        }
+      }
+    )
   }
 
   return (
@@ -32,7 +56,7 @@ const HasAuth: React.FC<IHasAuth> = ({ user }) => {
 
         <Button
           onClick={() => {
-            router.push('/home')
+            router.push('/dashboard')
           }}
           type='button'
           className='gap-2 underline underline-offset-1 dark:text-white'

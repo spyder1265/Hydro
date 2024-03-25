@@ -1,5 +1,5 @@
 'use client'
-import { Theme, useTheme } from '@/app/contexts/ThemeContext'
+import { Theme, useTheme } from '@/contexts/ThemeContext'
 import { cn } from '@/lib/utils/cn'
 import { useRouter } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'

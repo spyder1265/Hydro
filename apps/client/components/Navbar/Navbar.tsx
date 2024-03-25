@@ -1,17 +1,19 @@
 'use client'
-import { Fragment, useState } from 'react'
+import { FC, Fragment, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   Bars3BottomLeftIcon,
   UserGroupIcon,
   XMarkIcon,
-  UserIcon,
-  PhoneIcon,
-  HomeIcon
+  PhoneIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import ThemeSelector from './ThemeSelector'
+import { useSidebarContext } from '@/contexts/SidebarContext'
+import { isSmallScreen } from '@/helpers/is-small-screen'
+import { Navbar as FlowbiteNavbar } from 'flowbite-react'
+import { HiMenuAlt1, HiX } from 'react-icons/hi'
 
 const products = [
   {
@@ -25,12 +27,6 @@ const products = [
     description: 'Get in touch with us',
     href: '#contact',
     icon: PhoneIcon
-  },
-  {
-    name: 'Admin',
-    description: 'Login as admin to add new vehicles',
-    href: '#admin',
-    icon: UserIcon
   }
 ]
 
@@ -47,17 +43,6 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = usePathname()
   const router = useRouter()
-
-  const handleSearch = (value: string) => {
-    if (location !== '/vehicles') {
-      router.push(`/vehicles?query=${encodeURIComponent(value)}`)
-    }
-
-    onSearch?.(value)
-    if (mobileMenuOpen) {
-      setMobileMenuOpen(false)
-    }
-  }
 
   return (
     <header
@@ -83,7 +68,10 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           </button>
         </div>
 
-        <div className='flex h-6 items-center place-self-center md:h-10 lg:flex-1'>
+        <div
+          className='ml-7 flex h-6 items-center
+place-self-center  md:m-0 md:h-10 lg:flex-1'
+        >
           <a
             href='/'
             className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl dark:from-slate-300 dark:to-slate-500'
@@ -92,7 +80,7 @@ const Navbar: React.FC<Props> = ({ contact, onSearch }) => {
           </a>
         </div>
 
-        <div className='my-auto ml-5 h-full justify-center pl-2 lg:hidden'>
+        <div className='my-auto  h-full justify-center lg:hidden'>
           <ThemeSelector />
         </div>
 
@@ -303,13 +291,15 @@ export default Navbar
 export const FormNav = () => {
   const searchparams = useSearchParams()
   return (
-    <div className='flex w-full justify-between px-9'>
-      <a
-        href='/'
-        className='hover:text-neutral-600 hover:dark:text-neutral-300'
-      >
-        <HomeIcon className='h-7 ' />
-      </a>
+    <div className='flex w-full justify-between px-9 text-neutral-950 dark:text-neutral-50 '>
+      <div className='-m-1.5 p-1.5'>
+        <a
+          href='/'
+          className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent hover:opacity-75 md:text-2xl dark:from-slate-300 dark:to-slate-500'
+        >
+          Hydro
+        </a>
+      </div>
       <div className='flex gap-2'>
         <ThemeSelector />
 
@@ -322,7 +312,7 @@ export const FormNav = () => {
           </a>
         ) : (
           <a
-            href='/auth?form=signup'
+            href='/auth?form=Signup'
             className='rounded-lg border px-4 py-1 dark:hover:border-neutral-300 dark:hover:text-neutral-300'
           >
             Signup
@@ -330,5 +320,46 @@ export const FormNav = () => {
         )}
       </div>
     </div>
+  )
+}
+
+export const DashboardNavbar: FC<Record<string, never>> = function () {
+  const { isCollapsed: isSidebarCollapsed, setCollapsed: setSidebarCollapsed } =
+    useSidebarContext()
+
+  return (
+    <header>
+      <FlowbiteNavbar
+        fluid
+        className='fixed top-0 z-30 w-full border-b border-gray-200 bg-white p-0 sm:p-0 dark:border-gray-700 dark:bg-neutral-800'
+      >
+        <div className='relative w-full p-3 pr-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <button
+                aria-controls='sidebar'
+                aria-expanded
+                className='mr-2 cursor-pointer rounded p-2 hover:opacity-75 dark:text-gray-400 dark:hover:text-white'
+                onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
+              >
+                {isSidebarCollapsed && isSmallScreen() ? (
+                  <HiMenuAlt1 className='h-6 w-6' />
+                ) : isSidebarCollapsed && !isSmallScreen() ? (
+                  <HiMenuAlt1 className='h-6 w-6' />
+                ) : (
+                  <HiX className='h-6 w-6' />
+                )}
+              </button>
+              <FlowbiteNavbar.Brand href='/'>
+                <h1 className='bg-gradient-to-br from-neutral-600 to-slate-500 bg-clip-text text-center text-2xl font-medium tracking-tight text-transparent md:text-2xl dark:from-slate-300 dark:to-slate-500'>
+                  Hydro
+                </h1>
+              </FlowbiteNavbar.Brand>
+            </div>
+            <ThemeSelector />
+          </div>
+        </div>
+      </FlowbiteNavbar>
+    </header>
   )
 }
