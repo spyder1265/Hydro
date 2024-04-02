@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={
           inter.className +
-          '  overflow-x-hidden transition-colors duration-500 ease-in-out dark:bg-neutral-900 '
+          '  overflow-x-hidden transition-colors duration-200 ease-in-out dark:bg-neutral-900 '
         }
       >
         <Providers>{children}</Providers>
