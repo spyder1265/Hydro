@@ -29,7 +29,6 @@ const DashboardLayoutContent: FC<PropsWithChildren> = function ({ children }) {
   useLayoutEffect(() => {
     const fetchUser = async () => {
       const user = await getCurrentUser()
-
       return user
     }
 

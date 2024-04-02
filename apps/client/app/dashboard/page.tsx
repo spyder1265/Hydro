@@ -8,6 +8,8 @@ import AuthUserByJWT from '../actions/AuthUser'
 import Image from 'next/image'
 import { useSidebarContext } from '@/contexts/SidebarContext'
 import { twMerge } from 'tailwind-merge'
+import CardGrid from '@/components/Dashboard/CardGrid'
+import Dash_Content from '@/components/Dashboard/Dash_Content'
 
 interface Ipage {}
 
@@ -29,31 +31,6 @@ const page: React.FC<Ipage> = ({}) => {
     })
   }, [])
 
-  useLayoutEffect(() => {
-    const token = localStorage.getItem('token')
-    if (
-      token &&
-      token !== 'undefined' &&
-      token !== 'null' &&
-      token !== undefined
-    ) {
-      AuthUserByJWT(token).then(user => {
-        if (user && user.id.length > 0) {
-          getCurrentUser().then(user => {
-            if (user && user?.id?.length > 0) {
-              setUser([user!])
-              setIsLoading(false)
-            } else {
-              router.push('/auth')
-            }
-          })
-        }
-      })
-    } else {
-      router.push('/auth')
-    }
-  })
-
   if (isloading) {
     return <div>Loading...</div>
   } else
@@ -65,22 +42,22 @@ const page: React.FC<Ipage> = ({}) => {
           isCollapsed ? 'lg:ml-[4.1rem]' : 'lg:ml-64'
         )}
       >
-        <div className='flex h-full w-full flex-col items-center p-24  dark:text-neutral-300'>
-          {/* <h1 className='text-2xl font-bold capitalize'>home</h1> */}
-          <div className='flex flex-col items-center'>
-            <Image
-              src={'/placeholder.jpg'}
-              width={100}
-              height={100}
-              alt={'profile'}
-              className='rounded-full'
-            />
-            <h1 className='text-2xl font-bold capitalize'>
-              Welcome {user.at(0)?.name}
-            </h1>
-            <h1 className='text-2xl font-bold capitalize'>
-              Your email is {user.at(0)?.email}
-            </h1>
+        <div className='mt-20  flex h-full w-full flex-col items-center px-2 dark:text-neutral-300'>
+          <div className=' flex h-full w-full flex-col space-y-4 overflow-y-scroll p-8 pb-20 pt-6'>
+            {/* content */}
+            <Dash_Content />
+            <div className='flex h-full w-full items-center justify-center space-x-1 pb-8 font-semibold '>
+              {/* copyrights */}
+              <span className='text-sm text-neutral-500 dark:text-neutral-400'>
+                © 2024
+              </span>
+              <a
+                href='#copy'
+                className='text-sm text-neutral-500 dark:text-neutral-400'
+              >
+                Hydro.inc
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -47,8 +47,6 @@ export class AuthController {
       password: string;
     },
   ) {
-    // convert it to User form
-    // console.log(signUpDto);
     return this.authService.signUp(signUpDto);
   }
 

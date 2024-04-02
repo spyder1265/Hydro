@@ -1,7 +1,7 @@
 'use client'
 import { Theme, useTheme } from '@/contexts/ThemeContext'
 import { cn } from '@/lib/utils/cn'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FaMoon, FaSun, FaXmark } from 'react-icons/fa6'
 import { HiOutlineTv } from 'react-icons/hi2'
@@ -14,6 +14,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
   const [theme, setTheme] = useState(contextTheme)
   const modalRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
   const handleTheme = (theme: Theme) => {
     toggleTheme(theme)
@@ -110,7 +111,10 @@ const ThemeSelector: React.FC<IThemeSelector> = ({}) => {
           className='absolute -right-2 top-12 z-50 flex flex-col items-center '
         >
           <div className='h-2 w-2 rotate-180 border-4 border-solid border-transparent border-t-white '></div>
-          <div className='space-y-2 rounded-xl border bg-white p-4 shadow-lg dark:bg-slate-950'>
+          <div
+            className={`space-y-2 rounded-xl border-[0.2px] bg-white p-4 shadow-lg 
+            ${pathname.includes('dashboard') || pathname.includes('auth') ? 'dark:bg-neutral-800' : 'dark:bg-slate-950'}`}
+          >
             {themeOptions.map((themeOption, index) => (
               <button
                 key={themeOption.title + index}

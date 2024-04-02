@@ -24,7 +24,7 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
 
   const avatarClick = () => {
     if (isCollapsed) {
-      router.push('/dashboard#profile')
+      router.push('/dashboard/profile/' + encodedName)
     } else {
       setIsOpen(!isOpen && isCollapsed)
     }
@@ -74,17 +74,17 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
     },
 
     item: {
-      base: 'flex items-center justify-center hover:cursor-pointer rounded-lg p-2 text-base font-normal text-neutral-900 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700',
-      active: 'bg-neutral-200 opacity-60  dark:bg-neutral-700',
+      base: 'flex items-center justify-center hover:cursor-pointer rounded-lg p-2 text-base font-normal text-neutral-800 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700',
+      active: 'bg-neutral-200 opacity-80 dark:bg-neutral-700',
       collapsed: {
         insideCollapse: 'group w-full pl-8 transition duration-75',
         noIcon: 'font-bold'
       },
       content: {
-        base: 'px-3 flex-1 whitespace-nowrap'
+        base: 'px-4 py-2 flex-1 whitespace-nowrap rounded-lg text-neutral-800 dark:text-neutral-300 shadow-xl bg-white dark:bg-neutral-800'
       },
       icon: {
-        base: 'h-6 w-6 flex-shrink-0 text-neutral-500 transition duration-75 group-hover:text-neutral-900 dark:text-neutral-400 dark:group-hover:text-white',
+        base: 'h-6 w-6 flex-shrink-0 text-neutral-800 transition duration-75 group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white',
         active: 'text-neutral-700 dark:text-neutral-100'
       },
       label: '',
@@ -165,8 +165,8 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
 
                 {/* profile */}
                 <Sidebar.Item
-                  href={'/dashboard/' + user?.name}
-                  active={isActive('/dashboard/' + encodedName)}
+                  href={'/dashboard/profile/' + user?.name}
+                  active={isActive('/dashboard/profile/' + encodedName)}
                   className='cursor-pointer'
                   image={user?.image || '/profile-picture-5.jpg'}
                 >
@@ -182,8 +182,8 @@ export const DashboardSidebar: FC<IDashboardSidebar> = function ({ user }) {
                   SignOut
                 </Sidebar.Item>
                 <a
-                  href={'/dashboard/' + encodedName}
-                  className={`inline-flex w-full items-center ${isActive('/dashboard/' + encodedName) && 'bg-neutral-200 dark:bg-neutral-700'} rounded-lg px-2 py-2 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 ${isCollapsed && 'justify-center'} gap-2`}
+                  href={'/dashboard/profile/' + encodedName}
+                  className={`inline-flex w-full items-center ${isActive('/dashboard/profile/' + encodedName) && 'bg-neutral-200 dark:bg-neutral-700'} rounded-lg px-2 py-2 hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-700 ${isCollapsed && 'justify-center'} gap-2`}
                 >
                   <Avatar
                     img={user?.image || '/profile-picture-5.jpg'}

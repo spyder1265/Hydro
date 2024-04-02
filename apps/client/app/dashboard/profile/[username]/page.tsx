@@ -1,13 +1,15 @@
 'use client'
-import { SettingsPage } from '@/components/Dashboard/settings-page'
-import { Separator } from '@/components/Dashboard/ui/separator'
+import { ProfileForm } from '@/components/Dashboard/profile-form'
 import { useSidebarContext } from '@/contexts/SidebarContext'
 import { twMerge } from 'tailwind-merge'
 
-interface Ipage {}
+interface Ipage {
+  params: { username: string }
+}
 
-const page: React.FC<Ipage> = ({}) => {
+const page: React.FC<Ipage> = ({ params }) => {
   const { isCollapsed } = useSidebarContext()
+  const decoded = decodeURIComponent(params.username.toString())
 
   return (
     <div
@@ -21,17 +23,7 @@ const page: React.FC<Ipage> = ({}) => {
         <div className=' flex h-full w-full flex-col space-y-4 overflow-y-scroll p-8 pb-20 pt-6'>
           {/* content */}
           <div className='w-full md:w-2/3'>
-            <div className='space-y-6'>
-              <div>
-                <h3 className='text-lg font-medium'>Account</h3>
-                <p className='text-muted-foreground text-sm'>
-                  Update your account settings. Set your preferred language and
-                  timezone.
-                </p>
-              </div>
-              <Separator />
-              <SettingsPage />
-            </div>
+            <ProfileForm />
           </div>
           <div className='flex h-full w-full items-center justify-center space-x-1 pb-8 font-semibold '>
             {/* copyrights */}
